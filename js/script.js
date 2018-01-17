@@ -1,0 +1,267 @@
+var goblet_type = {
+	dragon: 0,
+	skeleton_hand: 1,
+	skull: 2
+}
+
+var goblets_length = 3;
+
+var goblets = {
+	[goblet_type.dragon]: {
+		id: 0,
+		price: 1200,
+		icon: 'img/goblet_1.png',
+		name: 'Дракон',
+		count: 0
+	},
+	[goblet_type.skeleton_hand]: {
+		id: 1,
+		price: 1300,
+		icon: 'img/goblet_2.png',
+		name: 'Рука скелета',
+		count: 0
+	},
+	[goblet_type.skull]: {
+		id: 2,
+		price: 1100,
+		icon: 'img/goblet_3.png',
+		name: 'Череп',
+		count: 0
+	}
+}
+
+var total_count = 0;
+var total_price = 0;
+var discount = 0;
+var delivery_type = null;
+
+function slow_move_to(id) {
+	$('html, body').animate({scrollTop: $(id).offset().top}, 800);
+	return false;
+}
+
+function on_anchor_click(e) {
+	return slow_move_to($(e).attr('href'));
+}
+
+function update_order_details() {
+	total_price = 0;
+	total_count = 0;
+	for (var i = 0; i < goblets_length; ++i) {
+		var g = goblets[i]
+		total_price += g.count * g.price;
+		total_count += g.count;
+	}
+	discount = 0;
+	var vk_flag = document.getElementById("vk_flag");
+	if (vk_flag.checked) {
+		$("#vk_link_input").fadeIn(500);
+		discount = 5;
+	} else {
+		$("#vk_link_input").fadeOut(500);
+	}
+	var selected_delivery = $("input[name=delivery_type]:checked");
+	if (selected_delivery.length == 0) {
+		delivery_type = null;
+	} else {
+		delivery_type = selected_delivery.val();
+		if (delivery_type == 'courier') {
+			total_price += 300;
+			$("#address_input").fadeIn(500);
+		} else {
+			$("#address_input").fadeOut(500);
+		}
+	}
+}
+
+function add_goblet_to_busket(goblet_id) {
+	++goblets[goblet_id].count;
+	update_busket(goblet_id);
+}
+
+function delete_goblet_from_busket(goblet_id) {
+	--goblets[goblet_id].count;
+	update_busket(goblet_id);
+}
+
+function goblet_to_dom(goblet) {
+	var tr = document.createElement('tr');
+	tr.className = 'goblet_set';
+
+	var td_icon = document.createElement('td');
+	var icon = document.createElement('img');
+	icon.setAttribute('src', goblet.icon);
+	td_icon.appendChild(icon);
+
+	var td_name = document.createElement('td');
+	td_name.className = 'goblet_title';
+	td_name.textContent = goblet.name;
+
+	var td_price = document.createElement('td');
+	td_price.className = 'price';
+	td_price.textContent = goblet.price + '₽ х ' + goblet.count +
+			       ' = ' + goblet.count * goblet.price + '₽';
+
+	var td_add = document.createElement('td');
+	var add_button = document.createElement('button');
+	add_button.className = 'add_button';
+	add_button.textContent = '+';
+	add_button.onclick = function() {
+		add_goblet_to_busket(goblet.id);
+	};
+	td_add.appendChild(add_button);
+
+	var td_delete = document.createElement('td');
+	var delete_btn = document.createElement('button');
+	delete_btn.className = 'delete_button';
+	delete_btn.textContent = '-';
+	delete_btn.onclick = function() {
+		delete_goblet_from_busket(goblet.id);
+	};
+	td_delete.appendChild(delete_btn);
+
+	tr.appendChild(td_icon);
+	tr.appendChild(td_name);
+	tr.appendChild(td_price);
+	tr.appendChild(td_add);
+	tr.appendChild(td_delete);
+	return tr;
+}
+
+function update_busket(updated_goblet) {
+	var delivery_was_not_selected = delivery_type == null;
+	update_order_details();
+
+	var b = $(".busket");
+	var goblet_word;
+	var price_with_discount = total_price * (100 - discount) / 100;
+	if (total_count == 0) {
+		b.fadeOut(500);
+	} else {
+		/* Update busket popup window. */
+		if (total_count >= 5 && total_count <= 20)
+			goblet_word = "кубков";
+		else if (total_count % 10 == 1)
+			goblet_word = "кубок";
+		else if (total_count % 10 >= 2 && total_count % 10 <= 4)
+			goblet_word = "кубка";
+		else
+			goblet_word = "кубков";
+		var html = "<u>Ваш заказ:</u><br><b>" + total_count +
+			   " " + goblet_word + "</b>, " + price_with_discount +
+			   "₽<br><a id=\"go_to_order_section\" " +
+			   "href=\"#order_section\" " +
+			   "onclick=\"return on_anchor_click(this);\">" +
+			   "К корзине</a>";
+		b.html(html);
+		b.fadeIn(500);
+	}
+
+	/* Update ordering area. */
+	var items = document.getElementById('order_items');
+	/* Clear old items. */
+	while (items.firstChild)
+		items.removeChild(items.firstChild);
+	for (var i = 0; i < goblets_length; ++i) {
+		var goblet = goblets[i];
+		if (goblet.count > 0) {
+			var dom = goblet_to_dom(goblet)
+			items.appendChild(dom);
+		}
+	}
+
+	var result = document.getElementById("order_result");
+	if (total_count == 0)
+		goblet_word = 'кубков';
+	var html = '<b>' + total_count + '</b> ' + goblet_word + '<br>';
+	if (total_count > 0) {
+		html += '<b>' + total_price + '₽';
+		if (discount > 0) {
+			html += ' - <span class="red_text">' + discount +
+				'%</span> = ' + price_with_discount + '₽';
+		}
+		html += '</b><br>'
+	}
+	result.innerHTML = html;
+
+	/* Update form. */
+	var order_form = document.getElementById("order_form");
+	if (total_count == 0) {
+		$(order_form).slideUp(700);
+		return;
+	}
+	var customer = document.getElementById("customer");
+	var submit = document.getElementById("send_form_btn");
+	if (delivery_type == null) {
+		$(customer).fadeOut(500);
+		$(submit).fadeOut(500);
+	} else {
+		$(customer).fadeIn(500);
+		$(submit).fadeIn(500);
+	}
+	$(order_form).slideDown(700);
+	if (delivery_was_not_selected && delivery_type != null)
+		slow_move_to('#customer');
+}
+
+function put_in_busket(button, goblet_id) {
+	var ok_msg = $(button).parent().children().last();
+	ok_msg.fadeIn(1000, function() { ok_msg.fadeOut(1000); });
+	add_goblet_to_busket(goblet_id);
+}
+
+function show_form_error(message) {
+	var error = document.getElementById('error_message');
+	error.innerText = message;
+	$(error).fadeIn(500);
+}
+
+function hide_error() {
+	var error = document.getElementById('error_message');
+	$(error).fadeOut(500);
+}
+
+function validate_email(email) {
+	var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return re.test(email.toLowerCase());
+}
+
+function validate_phone(phone) {
+	var re = /^\d{11}$/;
+	return re.test(phone);
+}
+
+function sumbit_async() {
+	/* Validate and send via AJAX. */
+	var vk_flag = document.getElementById("vk_flag").checked;
+	if (vk_flag) {
+		var vk_url = $("#vk_link_input").find('input[name="vk"]');
+		vk_url = vk_url.val();
+		if (vk_url.indexOf('vk.com') == -1 &&
+		    vk_url.indexOf('vk.ru') == -1) {
+			show_form_error('Неверная ссылка на страницу ВК');
+			return;
+		}
+	}
+	var email = $("#email_input").find('input[name="email"]').val().trim();
+	if (email.length > 0 && !validate_email(email)) {
+		show_form_error('Неверная почта');
+		return;
+	}
+	var phone = $("#phone_input").find('input[name="phone"]').val().trim();
+	if (!validate_phone(phone)) {
+		show_form_error('Неверный телефон - используйте формат ' +
+				'"89031234567"');
+		return;
+	}
+	if (delivery_type == 'courier') {
+		var address = $("#address_input").find('input[name="address"]');
+		address = address.val().trim();
+		if (address.length == 0) {
+			show_form_error('Для курьреской доставки нужно ' +
+					'указать адрес')
+			return;
+		}
+	}
+	hide_error();
+}

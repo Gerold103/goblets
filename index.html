@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Средневековые кубки</title>
+		<link rel="stylesheet" type="text/css" href="css/styles.css">
+		<script src="js/jquery.js"></script>
+		<script src="js/script.js"></script>
+	</head>
+	<body align="center">
+		<div class="main_conatiner" align="center">
+		<div class="castle_img">
+			<div class="header">
+				<img src="img/logo.png">
+			</div>
+			<div class="welcome_banner" align="center">
+				<div>
+					<h2>Мы делаем кубки и кружки, стилизованные под средневековье</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+					   Mauris tempus sapien quis orci laoreet, id sollicitudin
+					   lectus commodo. Maecenas sed eros scelerisque, venenatis
+					   nisi ac.</p>
+					<a href="#catalogue" class="wood_button" id="go_to_catalogue"
+					   onclick="return on_anchor_click(this);">
+						Перейти к каталогу
+					</a>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="site_description">
+			<div class="table_row" align="center">
+				<span align="center"><img src="img/test3.png"><img src="img/vine.png"></span>
+				<p>Vivamus lobortis interdum neque, in semper
+				arcu ornare sed. Praesent rutrum sem vitae luctus
+				posuere. Duis pulvinar at tellus eget ullamcorper.
+				Proin iaculis malesuada sapien non laoreet. Cras mollis
+				aliquet posuere. Ut pharetra ligula est, quis suscipit
+				odio dapibus ut. Maecenas egestas, velit non convallis
+				eleifend, urna erat dictum leo.</p>
+				<span align="center"><img src="img/test2.png"></span>
+			</div>
+		</div>
+		<hr>
+		<span class="busket">
+		</span>
+		<div id="catalogue" class="catalogue" align="center">
+			<img class="section_header" src="img/tablet.png">
+			<div align="center" class="goblet_item">
+				<img src="img/goblet_icon_1.png">
+				<div class="goblet_title">Дракон</div>
+				<hr>
+				<p>Quisque sed consectetur ex, a rutrum erat.
+				   Pellentesque ipsum turpis, posuere eget
+				   consequat nec.</p>
+				<div class="price">1200₽</div>
+				<div class="materials">
+					<u>Материалы:</u> <img src="img/steel_icon.jpg"> <img src="img/wood_icon.jpg">
+				</div>
+				<button class="wood_button" onclick="put_in_busket(this, goblet_type.dragon);">
+					В корзину <img src="img/basket.png">
+				</button>
+				<div id="ok_goblet" class="ok_msg">Добавлено!</div>
+			</div>
+			<div align="center" class="goblet_item">
+				<img src="img/goblet_icon_2.png">
+				<div class="goblet_title">Рука скелета</div>
+				<hr>
+				<p>Quisque sed consectetur ex, a rutrum erat.
+				   Pellentesque ipsum turpis, posuere eget
+				   consequat nec.</p>
+				<div class="price">1200₽</div>
+				<div class="materials">
+					<u>Материалы:</u> <img src="img/steel_icon.jpg">
+				</div>
+				<button class="wood_button" onclick="put_in_busket(this, goblet_type.skeleton_hand);">
+					В корзину <img src="img/basket.png">
+				</button>
+				<div class="ok_msg">Добавлено!</div>
+			</div>
+			<div align="center" class="goblet_item">
+				<img src="img/goblet_icon_3.png">
+				<div class="goblet_title">Череп</div>
+				<hr>
+				<p>Quisque sed consectetur ex, a rutrum erat.
+				   Pellentesque ipsum turpis, posuere eget
+				   consequat nec.</p>
+				<div class="price">1200₽</div>
+				<div class="materials">
+					<u>Материалы:</u> <img src="img/steel_icon.jpg"> <img src="img/wood_icon.jpg">
+				</div>
+				<button class="wood_button" onclick="put_in_busket(this, goblet_type.skull);">
+					В корзину <img src="img/basket.png">
+				</button>
+				<div class="ok_msg">Добавлено!</div>
+			</div>
+		</div>
+		<hr>
+		<div align="center" id="order_section">
+			<img class="section_header" src="img/order.png">
+			<table id="order_items" cellspacing="0" cellpadding="0">
+			</table>
+			<div id="order_result" class="result">
+				<b>0</b> кубков<br>
+			</div>
+			<div id="order_form">
+				<span class="red_text">*</span> - обязательно для заполнения<br><br>
+				<div class="discounts">
+					<label class="custom_checkbox">
+						Я есть в <a href="#">группе ВК</a>
+						<span class="red_text">(-5%)</span>
+						<input type="checkbox" id="vk_flag" onchange="update_busket();">
+						<span class="checkmark"></span>
+					</label>
+				</div>
+				<div class="delivery">
+					<u>Способ доставки</u><span class="red_text">*</span><br>
+					<label class="custom_checkbox">
+						Доставка курьером (300₽)
+						<input type="radio" name="delivery_type" value="courier" onchange="update_busket();">
+						<span class="radiomark"></span>
+					</label>
+					<br>
+					<label class="custom_checkbox">
+						Самовывоз (м. Войковская)
+						<input type="radio" name="delivery_type" value="customer" onchange="update_busket();">
+						<span class="radiomark"></span>
+					</label>
+				</div>
+				<hr>
+				<table id="customer" cellspacing="0" cellpadding="0">
+					<tr id="vk_link_input">
+						<td align="right">Ссылка на ваш ВК<span class="red_text">*</span>:</td>
+						<td><input type="text" name="vk"></td>
+					</tr>
+					<tr id="name_input">
+						<td align="right">Ваше Имя:</td>
+						<td><input type="text" name="name"></td>
+					</tr>
+					<tr id="email_input">
+						<td align="right">Ваша почта:</td>
+						<td><input type="email" name="email"></td>
+					</tr>
+					<tr id="phone_input">
+						<td align="right">Ваш телефон<span class="red_text">*</span>:</td>
+						<td><input type="tel" name="phone" placeholder="89031234567"></td>
+					</tr>
+					<tr id="address_input">
+						<td align="right">Адрес доставки<span class="red_text">*</span>:</td>
+						<td><input type="text" name="address"></td>
+					</tr>
+					<tr id="comment_input">
+						<td align="right">Комментарий:</td>
+						<td><textarea rows="4" name="comment"></textarea></td>
+					</tr>
+				</table>
+				<div id="error_message">Ошибка</div>
+				<button id="send_order_button" class="wood_button" onclick="sumbit_async();">Оформить заказ</button>
+			</div>
+		</div>
+		<div class="footer">
+			<span>2017</span>
+			<img src="img/footer.jpg">
+		</div>
+		</div>
+	</body>
+</html>

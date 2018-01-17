@@ -1,0 +1,419 @@
+@font-face {
+	font-family: MiddleAge;
+	src: url(../fonts/middle_age.ttf);
+}
+
+* {
+	font-family: Arial;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	height: 100%;
+	padding: 0px;
+	margin: -10px;
+	text-align: center;
+	background-repeat: repeat;
+}
+
+hr {
+	margin-top: 0px;
+}
+
+.main_conatiner {
+	min-height: 100%;
+	min-width: 1100px;
+	max-width: 2000px;
+	display: inline-block;
+	position: relative;
+}
+
+.header {
+	padding-top: 20px;
+	padding-bottom: 15px;
+}
+
+.header img {
+	height: 200px;
+}
+
+.table_row {
+	display: table-row;
+	vertical-align: middle;
+	height: 100%;
+}
+
+.table_row > * {
+	display: table-cell;
+}
+
+.castle_img {
+	background-image: url(../img/castle.jpg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	padding-bottom: 20px;
+}
+
+.wood_button {
+	background-image: url(../img/wood_button.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	font-size: 30px;
+	letter-spacing: 2px;
+	font-weight: bold;
+	border-radius: 15px;
+	border: 3px solid #c18c37;
+	color: black;
+	padding: 8px;
+	padding-left: 15px;
+	padding-right: 15px;
+	font-family: MiddleAge;
+	text-shadow: 0px 0px 5px rgba(200, 109, 57, 1);
+}
+
+.wood_button:hover {
+	background-image: url(../img/wood_button_hover.jpg);
+}
+
+.wood_button:active {
+	background-image: url(../img/wood_button_active.jpg);
+}
+
+.welcome_banner {
+	margin-top: 20px;
+	color: white;
+}
+
+.welcome_banner h2 {
+	font-size: 40px;
+}
+
+.welcome_banner p {
+	font-size: 25px;
+}
+
+.welcome_banner > div {
+	background-color: rgba(215, 215, 215, 0.4);
+	padding-top: 80px;
+	padding-bottom: 80px;
+	padding-left: 100px;
+	padding-right: 100px;
+	border-radius: 45px;
+	width: 55%;
+}
+
+.welcome_banner a {
+	height: 50px;
+	width: 300px;
+	text-decoration: none;
+}
+
+.site_description {
+	width: 100%;
+	display: table;
+	font-size: 25px;
+}
+
+.site_description img {
+	height: 350px;
+	display: inline-block;
+}
+
+.site_description span {
+	width: 30%;
+	height: 100%;
+	vertical-align: middle;
+}
+
+.site_description p {
+	width: 40%;
+	height: 100%;
+	vertical-align: middle;
+	text-align: justify;
+}
+
+.section_header {
+	display: block;
+	height: 120px;
+}
+
+.goblet_item {
+	display: inline-block;
+	width: 300px;
+	padding: 20px;
+	padding-bottom: 30px;
+	margin: 20px;
+	margin-left: 60px;
+	margin-right: 60px;
+	border-radius: 20px;
+	border-top: 2px solid grey;
+	border-bottom: 2px solid grey;
+	position: relative;
+}
+
+.goblet_item > img {
+	display: block;
+	width: 250px;
+	height: 250px;
+}
+
+.goblet_title {
+	font-weight: bold;
+	font-family: MiddleAge;
+	letter-spacing: 2px;
+	font-size: 40px;
+}
+
+.goblet_item p {
+	text-align: justify;
+}
+
+.goblet_item .price {
+	font-family: MiddleAge;
+	letter-spacing: 2px;
+	font-size: 30px;
+}
+
+.goblet_item .materials {
+	margin-bottom: 10px;
+}
+
+.goblet_item .materials > img {
+	width: 25px;
+	height: 25px;
+	border-radius: 5px;
+	border: 1px solid black;
+	margin-bottom: -7px;
+	display: inline-block;
+}
+
+.goblet_item button:hover {
+	background-color: #c7c7c7;
+}
+
+.goblet_item button:active {
+	background-color: #a4a4a4;
+}
+
+.goblet_item button > img {
+	width: 25px;
+	height: 25px;
+	margin-bottom: -7px;
+	display: inline-block;
+}
+
+.goblet_item > .ok_msg {
+	font-weight: bold;
+	font-size: 20px;
+	color: #359827;
+	height: 0px;
+	width: 100%;
+	display: none;
+	position: absolute;
+	bottom: 25px;
+	right: 0px;
+}
+
+#order_section {
+	width: 100%;
+	padding-bottom: 110px;
+}
+
+#order_section table {
+	border: none;
+}
+
+.goblet_set {
+	text-align: center;
+}
+
+.goblet_set > * {
+	vertical-align: middle;
+	padding-bottom: 20px;
+	padding-top: 20px;
+	border-bottom: 1px solid black;
+}
+
+.goblet_set .price {
+	font-family: MiddleAge;
+	font-size: 25px;
+	letter-spacing: 2px;
+}
+
+.goblet_set img {
+	height: 140px;
+	padding-right: 50px;
+}
+
+.goblet_set .goblet_title {
+	padding-right: 50px;
+}
+
+#order_result *, #order_result {
+	font-family: MiddleAge;
+	font-size: 45px;
+	letter-spacing: 5px;
+}
+
+#send_order_button {
+	font-size: 50px;
+}
+
+.discounts, .discounts *, .delivery, .delivery * {
+	font-family: MiddleAge;
+	font-size: 35px;
+	letter-spacing: 5px;
+}
+
+.custom_checkbox {
+	display: inline-block;
+	position: relative;
+	padding-left: 35px;
+	margin-bottom: 12px;
+	margin-top: 12px;
+	cursor: pointer;
+}
+
+.custom_checkbox input {
+	position: absolute;
+	opacity: 0;
+}
+
+.checkmark, .radiomark {
+	position: absolute;
+	top: 4px;
+	left: 0;
+	height: 25px;
+	width: 25px;
+	background-color: #eee;
+}
+
+.checkmark {
+	border: 2px solid black;
+}
+
+.radiomark {
+	border-radius: 50%;
+	border: 2px solid black;
+}
+
+.custom_checkbox:hover input ~ .checkmark,
+.custom_checkbox:hover input ~ .radiomark {
+	background-color: #ccc;
+}
+
+.custom_checkbox input:checked ~ .checkmark,
+.custom_checkbox input:checked ~ .radiomark {
+	background-color: #2196F3;
+	transition: 0.5s;
+}
+
+#customer td {
+	padding: 10px;
+	font-size: 35px;
+	letter-spacing: 5px;
+}
+
+#customer td input {
+	font-size: 35px;
+	letter-spacing: 2px;
+	border-radius: 10px;
+	text-align: center;
+}
+
+#customer td textarea {
+	font-size: 35px;
+	letter-spacing: 2px;
+	border-radius: 10px;
+}
+
+.busket {
+	display: none;
+	z-index: 100;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	padding: 20px;
+	background-image: url(../img/empty_tablet.png);
+	background-size: cover;
+}
+
+.busket a {
+	text-decoration: none;
+	color: white;
+}
+
+.busket *, .busket {
+	font-size: 32px;
+	font-family: MiddleAge;
+	letter-spacing: 2px;
+	text-shadow: 0px 0px 5px rgba(200, 109, 57, 1);
+}
+
+#vk_link_input, #address_input {
+	display: none;
+}
+
+.red_text {
+	color: #b41e00;
+}
+
+#order_form {
+	display: none;
+}
+
+#order_form, #order_form * {
+	font-family: MiddleAge;
+}
+
+.footer {
+	position: absolute;
+  	left: 0;
+  	bottom: 0px;
+  	width: 100%;
+  	height: 100px;
+}
+
+.footer img {
+	width: 100%;
+	height: 100px;
+	display: inline-block;
+	vertical-align: bottom;
+}
+
+.footer span {
+	color: white;
+	position: relative;
+	top: 70px;
+}
+
+#error_message {
+	color: red;
+	font-size: 35px;
+	letter-spacing: 2px;
+	display: none;
+}
+
+.add_button, .delete_button {
+	border-radius: 100%;
+	height: 40px;
+	width: 40px;
+	font-size: 30px;
+	text-align: center;
+	font-weight: bold;
+	margin-left: 10px;
+	color: black;
+}
+
+.add_button {
+	background-color: #60aa53;
+}
+
+.delete_button {
+	background-color: #aa5353;
+}
