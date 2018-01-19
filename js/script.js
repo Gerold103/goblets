@@ -1,13 +1,5 @@
-var goblet_type = {
-	dragon: 0,
-	skeleton_hand: 1,
-	skull: 2
-}
-
-var goblets_length = 3;
-
-var goblets = {
-	[goblet_type.dragon]: {
+var products = [
+	{
 		id: 0,
 		price: 1200,
 		image: 'img/goblet_icon_1.png',
@@ -18,7 +10,7 @@ var goblets = {
 			     'Pellentesque ipsum turpis, posuere eget' +
 			     'consequat nec.',
 	},
-	[goblet_type.skeleton_hand]: {
+	{
 		id: 1,
 		price: 1300,
 		image: 'img/goblet_icon_2.png',
@@ -29,7 +21,7 @@ var goblets = {
 			     'Pellentesque ipsum turpis, posuere eget' +
 			     'consequat nec.',
 	},
-	[goblet_type.skull]: {
+	{
 		id: 2,
 		price: 1100,
 		image: 'img/goblet_icon_3.png',
@@ -40,7 +32,7 @@ var goblets = {
 			     'Pellentesque ipsum turpis, posuere eget' +
 			     'consequat nec.',
 	}
-};
+];
 
 var total_count = 0;
 var total_price = 0;
@@ -63,10 +55,10 @@ function on_anchor_click(e) {
 function update_order_details() {
 	total_price = 0;
 	total_count = 0;
-	for (var i = 0; i < goblets_length; ++i) {
-		var g = goblets[i]
-		total_price += g.count * g.price;
-		total_count += g.count;
+	for (var i = 0; i < products.length; ++i) {
+		var p = products[i]
+		total_price += p.count * p.price;
+		total_count += p.count;
 	}
 	discount = 0;
 	var vk_flag = document.getElementById("vk_flag");
@@ -90,40 +82,40 @@ function update_order_details() {
 	}
 }
 
-function add_goblet_to_busket(goblet_id) {
-	++goblets[goblet_id].count;
-	update_busket(goblet_id);
+function add_product_to_busket(product_id) {
+	++products[product_id].count;
+	update_busket();
 }
 
-function delete_goblet_from_busket(goblet_id) {
-	--goblets[goblet_id].count;
-	update_busket(goblet_id);
+function delete_product_from_busket(product_id) {
+	--products[product_id].count;
+	update_busket();
 }
 
-function goblet_to_dom(goblet) {
+function product_dom_for_order(product) {
 	var tr = document.createElement('tr');
-	tr.className = 'goblet_set';
+	tr.className = 'product_set';
 
 	var td_icon = document.createElement('td');
 	var icon = document.createElement('img');
-	icon.setAttribute('src', goblet.icon);
+	icon.setAttribute('src', product.icon);
 	td_icon.appendChild(icon);
 
 	var td_name = document.createElement('td');
-	td_name.className = 'goblet_title';
-	td_name.textContent = goblet.name;
+	td_name.className = 'product_title';
+	td_name.textContent = product.name;
 
 	var td_price = document.createElement('td');
 	td_price.className = 'price';
-	td_price.textContent = goblet.price + '₽ х ' + goblet.count +
-			       ' = ' + goblet.count * goblet.price + '₽';
+	td_price.textContent = product.price + '₽ х ' + product.count +
+			       ' = ' + product.count * product.price + '₽';
 
 	var td_add = document.createElement('td');
 	var add_button = document.createElement('button');
 	add_button.className = 'add_button';
 	add_button.textContent = '+';
 	add_button.onclick = function() {
-		add_goblet_to_busket(goblet.id);
+		add_product_to_busket(product.id);
 	};
 	td_add.appendChild(add_button);
 
@@ -132,7 +124,7 @@ function goblet_to_dom(goblet) {
 	delete_btn.className = 'delete_button';
 	delete_btn.textContent = '-';
 	delete_btn.onclick = function() {
-		delete_goblet_from_busket(goblet.id);
+		delete_product_from_busket(product.id);
 	};
 	td_delete.appendChild(delete_btn);
 
@@ -144,27 +136,27 @@ function goblet_to_dom(goblet) {
 	return tr;
 }
 
-function update_busket(updated_goblet) {
+function update_busket() {
 	var delivery_was_not_selected = delivery_type == null;
 	update_order_details();
 
 	var b = $(".busket");
-	var goblet_word;
+	var product_word;
 	var price_with_discount = total_price * (100 - discount) / 100;
 	if (total_count == 0) {
 		b.fadeOut(500);
 	} else {
 		/* Update busket popup window. */
 		if (total_count >= 5 && total_count <= 20)
-			goblet_word = "кубков";
+			product_word = "товаров";
 		else if (total_count % 10 == 1)
-			goblet_word = "кубок";
+			product_word = "товар";
 		else if (total_count % 10 >= 2 && total_count % 10 <= 4)
-			goblet_word = "кубка";
+			product_word = "товара";
 		else
-			goblet_word = "кубков";
+			product_word = "товаров";
 		var html = "<u>Ваш заказ:</u><br><b>" + total_count +
-			   " " + goblet_word + "</b>, " + price_with_discount +
+			   " " + product_word + "</b>, " + price_with_discount +
 			   "₽<br><a id=\"go_to_order_section\" " +
 			   "href=\"#order_section\" " +
 			   "onclick=\"return on_anchor_click(this);\">" +
@@ -178,18 +170,18 @@ function update_busket(updated_goblet) {
 	/* Clear old items. */
 	while (items.firstChild)
 		items.removeChild(items.firstChild);
-	for (var i = 0; i < goblets_length; ++i) {
-		var goblet = goblets[i];
-		if (goblet.count > 0) {
-			var dom = goblet_to_dom(goblet)
+	for (var i = 0; i < products.length; ++i) {
+		var product = products[i];
+		if (product.count > 0) {
+			var dom = product_dom_for_order(product)
 			items.appendChild(dom);
 		}
 	}
 
 	var result = document.getElementById("order_result");
 	if (total_count == 0)
-		goblet_word = 'кубков';
-	var html = '<b>' + total_count + '</b> ' + goblet_word + '<br>';
+		product_word = 'товаров';
+	var html = '<b>' + total_count + '</b> ' + product_word + '<br>';
 	if (total_count > 0) {
 		html += '<b>' + total_price + '₽';
 		if (discount > 0) {
@@ -220,10 +212,10 @@ function update_busket(updated_goblet) {
 		slow_move_to('#customer');
 }
 
-function put_in_busket(goblet_id, ok_msg) {
+function put_in_busket(product_id, ok_msg) {
 	ok_msg = $(ok_msg);
 	ok_msg.fadeIn(1000, function() { ok_msg.fadeOut(1000); });
-	add_goblet_to_busket(goblet_id);
+	add_product_to_busket(product_id);
 }
 
 function show_form_error(message) {
@@ -249,6 +241,10 @@ function validate_phone(phone) {
 
 function sumbit_async() {
 	/* Validate and send via AJAX. */
+	if (delivery_type == null) {
+		show_form_error('Укажите способ доставки');
+		return;
+	}
 	var vk_flag = document.getElementById("vk_flag").checked;
 	if (vk_flag) {
 		var vk_url = $("#vk_link_input").find('input[name="vk"]');
@@ -282,37 +278,37 @@ function sumbit_async() {
 	hide_error();
 }
 
-function create_function_on_put_in_busket(goblet_id, ok_msg) {
-	return function() { put_in_busket(goblet_id, ok_msg); };
+function create_function_on_put_in_busket(product_id, ok_msg) {
+	return function() { put_in_busket(product_id, ok_msg); };
 }
 
-function initial_push_goblets_to_dom() {
+function initial_push_products_to_dom() {
 	var catalogue = document.getElementById('catalogue');
 	while (catalogue.firstChild)
 		catalogue.removeChild(catalogue.firstChild);
-	for (var i = 0; i < goblets_length; ++i) {
-		var goblet = goblets[i];
+	for (var i = 0; i < products.length; ++i) {
+		var product = products[i];
 		var div = document.createElement('div');
 		div.setAttribute('align', 'center');
-		div.className = 'goblet_item';
+		div.className = 'product_item';
 
 		var img = new Image(250, 250);
-		img.src = goblet.image;
+		img.src = product.image;
 		img.style.display = 'block';
-		img.setAttribute('alt', goblet.name);
+		img.setAttribute('alt', product.name);
 
 		var title = document.createElement('div');
-		title.className = 'goblet_title';
-		title.textContent = goblet.name;
+		title.className = 'product_title';
+		title.textContent = product.name;
 
 		var hr = document.createElement('hr');
 
 		var description = document.createElement('p');
-		description.textContent = goblet.description;
+		description.textContent = product.description;
 
 		var price = document.createElement('div');
 		price.className = 'price';
-		price.textContent = goblet.price + '₽';
+		price.textContent = product.price + '₽';
 
 		var ok_msg = document.createElement('div');
 		ok_msg.className = 'ok_msg';
@@ -321,7 +317,7 @@ function initial_push_goblets_to_dom() {
 		var button = document.createElement('button');
 		button.className = 'wood_button';
 		button.onclick =
-			create_function_on_put_in_busket(goblet.id, ok_msg);
+			create_function_on_put_in_busket(product.id, ok_msg);
 
 		var text = document.createTextNode('В корзину');
 
@@ -338,4 +334,4 @@ function initial_push_goblets_to_dom() {
 	}
 }
 
-$(document).ready(initial_push_goblets_to_dom);
+$(document).ready(initial_push_products_to_dom);

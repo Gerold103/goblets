@@ -142,7 +142,14 @@ hr {
 	height: 120px;
 }
 
-.goblet_item {
+.product_title {
+	font-weight: bold;
+	font-family: MiddleAge;
+	letter-spacing: 2px;
+	font-size: 40px;
+}
+
+.product_item {
 	display: inline-block;
 	width: 300px;
 	padding: 20px;
@@ -156,37 +163,30 @@ hr {
 	position: relative;
 }
 
-.goblet_title {
-	font-weight: bold;
-	font-family: MiddleAge;
-	letter-spacing: 2px;
-	font-size: 40px;
-}
-
-.goblet_item p {
+.product_item p {
 	text-align: justify;
 }
 
-.goblet_item .price {
+.product_item .price {
 	font-family: MiddleAge;
 	letter-spacing: 2px;
 	font-size: 30px;
 }
 
-.goblet_item button:hover {
+.product_item button:hover {
 	background-color: #c7c7c7;
 }
 
-.goblet_item button:active {
+.product_item button:active {
 	background-color: #a4a4a4;
 }
 
-.goblet_item button > img {
+.product_item button > img {
 	margin-bottom: -7px;
 	display: inline-block;
 }
 
-.goblet_item > .ok_msg {
+.product_item > .ok_msg {
 	font-weight: bold;
 	font-size: 20px;
 	color: #359827;
@@ -207,29 +207,29 @@ hr {
 	border: none;
 }
 
-.goblet_set {
+.product_set {
 	text-align: center;
 }
 
-.goblet_set > * {
+.product_set > * {
 	vertical-align: middle;
 	padding-bottom: 20px;
 	padding-top: 20px;
 	border-bottom: 1px solid black;
 }
 
-.goblet_set .price {
+.product_set .price {
 	font-family: MiddleAge;
 	font-size: 25px;
 	letter-spacing: 2px;
 }
 
-.goblet_set img {
+.product_set img {
 	height: 140px;
 	padding-right: 50px;
 }
 
-.goblet_set .goblet_title {
+.product_set .product_title {
 	padding-right: 50px;
 }
 
