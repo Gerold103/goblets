@@ -199,14 +199,10 @@ function update_busket() {
 		return;
 	}
 	var customer = document.getElementById("customer");
-	var submit = document.getElementById("send_form_btn");
-	if (delivery_type == null) {
+	if (delivery_type == null)
 		$(customer).fadeOut(500);
-		$(submit).fadeOut(500);
-	} else {
+	else
 		$(customer).fadeIn(500);
-		$(submit).fadeIn(500);
-	}
 	$(order_form).slideDown(700);
 	if (delivery_was_not_selected && delivery_type != null)
 		slow_move_to('#customer');

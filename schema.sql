@@ -23,7 +23,7 @@ create table order (id integer autoincrement primary key,
                     open_ts timestamp default current_timestamp not NULL,
                     update_ts timestamp default current_timestamp
                               on update current_timestamp not NULL,
-                    delivery_type enum ('courier', 'ownshipment') not NULL,
+                    delivery_type enum ('courier', 'customer') not NULL,
                     user_id integer not NULL,
                     user_comment text NULL,
                     admin_comment text NULL,
