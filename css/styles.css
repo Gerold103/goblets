@@ -84,6 +84,10 @@ hr {
 	background-image: url(../img/wood_button_active.jpg);
 }
 
+#go_to_catalogue {
+	font-size: 45px;
+}
+
 .welcome_banner {
 	margin-top: 20px;
 	color: white;
@@ -320,7 +324,7 @@ hr {
 	border-radius: 10px;
 }
 
-.busket {
+#busket {
 	display: none;
 	z-index: 100;
 	position: fixed;
@@ -328,15 +332,19 @@ hr {
 	right: 0px;
 	padding: 20px;
 	background-image: url(../img/empty_tablet.png);
-	background-size: cover;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
 }
 
-.busket a {
+#busket a {
 	text-decoration: none;
+	border-radius: 5px;
+	padding: 2px;
+	border: 2px solid white;
 	color: white;
 }
 
-.busket *, .busket {
+#busket *, #busket {
 	font-size: 32px;
 	font-family: MiddleAge;
 	letter-spacing: 2px;
@@ -378,6 +386,10 @@ hr {
 	color: white;
 	position: relative;
 	top: 70px;
+}
+
+.footer a {
+	color: white;
 }
 
 #error_message {

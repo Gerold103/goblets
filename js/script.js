@@ -140,9 +140,10 @@ function update_busket() {
 	var delivery_was_not_selected = delivery_type == null;
 	update_order_details();
 
-	var b = $(".busket");
+	var b = $("#busket");
 	var product_word;
-	var price_with_discount = total_price * (100 - discount) / 100;
+	var price_with_discount =
+		Math.ceil(total_price * (100 - discount) / 100);
 	if (total_count == 0) {
 		b.fadeOut(500);
 	} else {
@@ -160,7 +161,7 @@ function update_busket() {
 			   "₽<br><a id=\"go_to_order_section\" " +
 			   "href=\"#order_section\" " +
 			   "onclick=\"return on_anchor_click(this);\">" +
-			   "К корзине</a>";
+			   "Корзина</a>";
 		b.html(html);
 		b.fadeIn(500);
 	}
