@@ -156,12 +156,6 @@ hr {
 	position: relative;
 }
 
-.goblet_item > img {
-	display: block;
-	width: 250px;
-	height: 250px;
-}
-
 .goblet_title {
 	font-weight: bold;
 	font-family: MiddleAge;
@@ -179,19 +173,6 @@ hr {
 	font-size: 30px;
 }
 
-.goblet_item .materials {
-	margin-bottom: 10px;
-}
-
-.goblet_item .materials > img {
-	width: 25px;
-	height: 25px;
-	border-radius: 5px;
-	border: 1px solid black;
-	margin-bottom: -7px;
-	display: inline-block;
-}
-
 .goblet_item button:hover {
 	background-color: #c7c7c7;
 }
@@ -201,8 +182,6 @@ hr {
 }
 
 .goblet_item button > img {
-	width: 25px;
-	height: 25px;
 	margin-bottom: -7px;
 	display: inline-block;
 }
@@ -416,4 +395,9 @@ hr {
 
 .delete_button {
 	background-color: #aa5353;
+}
+
+.loading {
+	font-family: MiddleAge;
+	font-size: 62px;
 }

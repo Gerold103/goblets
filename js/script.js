@@ -10,30 +10,46 @@ var goblets = {
 	[goblet_type.dragon]: {
 		id: 0,
 		price: 1200,
+		image: 'img/goblet_icon_1.png',
 		icon: 'img/goblet_1.png',
 		name: 'Дракон',
-		count: 0
+		count: 0,
+		description: 'Quisque sed consectetur ex, a rutrum erat.' +
+			     'Pellentesque ipsum turpis, posuere eget' +
+			     'consequat nec.',
 	},
 	[goblet_type.skeleton_hand]: {
 		id: 1,
 		price: 1300,
+		image: 'img/goblet_icon_2.png',
 		icon: 'img/goblet_2.png',
 		name: 'Рука скелета',
-		count: 0
+		count: 0,
+		description: 'Quisque sed consectetur ex, a rutrum erat.' +
+			     'Pellentesque ipsum turpis, posuere eget' +
+			     'consequat nec.',
 	},
 	[goblet_type.skull]: {
 		id: 2,
 		price: 1100,
+		image: 'img/goblet_icon_3.png',
 		icon: 'img/goblet_3.png',
 		name: 'Череп',
-		count: 0
+		count: 0,
+		description: 'Quisque sed consectetur ex, a rutrum erat.' +
+			     'Pellentesque ipsum turpis, posuere eget' +
+			     'consequat nec.',
 	}
-}
+};
 
 var total_count = 0;
 var total_price = 0;
 var discount = 0;
 var delivery_type = null;
+
+var busket_icon = new Image(25, 25);
+busket_icon.src = 'img/basket.png';
+busket_icon.setAttribute('alt', 'Корзина');
 
 function slow_move_to(id) {
 	$('html, body').animate({scrollTop: $(id).offset().top}, 800);
@@ -204,8 +220,8 @@ function update_busket(updated_goblet) {
 		slow_move_to('#customer');
 }
 
-function put_in_busket(button, goblet_id) {
-	var ok_msg = $(button).parent().children().last();
+function put_in_busket(goblet_id, ok_msg) {
+	ok_msg = $(ok_msg);
 	ok_msg.fadeIn(1000, function() { ok_msg.fadeOut(1000); });
 	add_goblet_to_busket(goblet_id);
 }
@@ -265,3 +281,61 @@ function sumbit_async() {
 	}
 	hide_error();
 }
+
+function create_function_on_put_in_busket(goblet_id, ok_msg) {
+	return function() { put_in_busket(goblet_id, ok_msg); };
+}
+
+function initial_push_goblets_to_dom() {
+	var catalogue = document.getElementById('catalogue');
+	while (catalogue.firstChild)
+		catalogue.removeChild(catalogue.firstChild);
+	for (var i = 0; i < goblets_length; ++i) {
+		var goblet = goblets[i];
+		var div = document.createElement('div');
+		div.setAttribute('align', 'center');
+		div.className = 'goblet_item';
+
+		var img = new Image(250, 250);
+		img.src = goblet.image;
+		img.style.display = 'block';
+		img.setAttribute('alt', goblet.name);
+
+		var title = document.createElement('div');
+		title.className = 'goblet_title';
+		title.textContent = goblet.name;
+
+		var hr = document.createElement('hr');
+
+		var description = document.createElement('p');
+		description.textContent = goblet.description;
+
+		var price = document.createElement('div');
+		price.className = 'price';
+		price.textContent = goblet.price + '₽';
+
+		var ok_msg = document.createElement('div');
+		ok_msg.className = 'ok_msg';
+		ok_msg.textContent = 'Добавлено!';
+
+		var button = document.createElement('button');
+		button.className = 'wood_button';
+		button.onclick =
+			create_function_on_put_in_busket(goblet.id, ok_msg);
+
+		var text = document.createTextNode('В корзину');
+
+		button.appendChild(text);
+		button.appendChild(busket_icon);
+		div.appendChild(img);
+		div.appendChild(title);
+		div.appendChild(hr);
+		div.appendChild(description);
+		div.appendChild(price);
+		div.appendChild(button);
+		div.appendChild(ok_msg);
+		catalogue.appendChild(div);
+	}
+}
+
+$(document).ready(initial_push_goblets_to_dom);

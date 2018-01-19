@@ -1,60 +1,90 @@
-create table goblet (id integer autoincrement primary key,
-		     name text not NULL,
-		     price unsigned not NULL,
-		     count unsigned not NULL,
-		     size text not NULL);
+create table product (id integer autoincrement primary key,
+                      type enum ('goblet', 'box') not NULL,
+                      name text not NULL,
+                      price unsigned not NULL,
+                      available_count unsigned not NULL,
+                      size text not NULL,
+
+                      index(type));
+
+create table user (id integer autoincrement primary key,
+                   first_order_ts timestamp default current_timestamp not NULL,
+                   vk_link text NULL,
+                   name text NULL,
+                   address text NULL,
+                   email text NULL,
+                   telephone text not NULL,
+
+                   unique index(telephone),
+                   index(vk_link),
+                   index(email));
 
 create table order (id integer autoincrement primary key,
-		    open_ts timestamp default current_timestamp not NULL,
-		    update_ts timestamp default current_timestamp
-			      on update current_timestamp not NULL,
-		    vk_link text NULL,
-		    delivery_type enum ('courier', 'ownshipment') not NULL,
-		    name text NULL,
-		    email text NULL,
-		    telephone text not NULL,
-		    address text NULL,
-		    comment text NULL,
-		    status enum ('new', 'processing', 'ready', 'shipped',
-		    		 'delivered', 'canceled') not NULL,
+                    open_ts timestamp default current_timestamp not NULL,
+                    update_ts timestamp default current_timestamp
+                              on update current_timestamp not NULL,
+                    delivery_type enum ('courier', 'ownshipment') not NULL,
+                    user_id integer not NULL,
+                    user_comment text NULL,
+                    admin_comment text NULL,
+                    status enum ('new', 'processing', 'ready', 'shipped',
+                                 'delivered', 'canceled') not NULL,
 
-		    index(vk_link),
-		    index(open_ts, status),
-		    index(email),
-		    index(telephone));
+                    index(status, open_ts),
+                    index(open_ts, status),
+                    index(user_id),
 
-create table goblet_order (id integer autoincrement primary key,
-			   goblet_id integer not NULL,
-			   order_id integer not NULL,
-			   count unsigned not NULL,
+                    foreign key (user_id) references user(id));
 
-			   index(goblet_id),
-			   unique index(order_id, goblet_id),
+create table product_order (id integer autoincrement primary key,
+                            product_id integer not NULL,
+                            order_id integer not NULL,
+                            count unsigned not NULL,
 
-			   foreign key (goblet_id) references goblet(id),
-			   foreign key (order_id) references order(id)
-			   on delete cascade);
-/*
+                            index(product_id),
+                            unique index(order_id, product_id),
+
+                            foreign key (product_id) references product(id),
+                            foreign key (order_id) references order(id));
+/**
  * Add order:
  *
+ *
  * begin;
- * insert into order values(NULL, NULL, NULL, @vk_link, @delivery_type,
- *                          @name, @email, @telephone, @address,
- *                          @comment, 'new');
+ * -- Find user.
+ * user_id = select id from user where telephone = @telephone;
+ * if not user_id then
+ *     insert into user values(NULL, NULL, @vk_link, @name, @address, @email,
+ *                             @telephone);
+ *     user_id = last_insert_id
+ * end
+ * insert into order values(NULL, NULL, NULL, @delivery_type, @user_id,
+ *                          @comment, NULL, 'new');
  * order_id = last_insert_id;
- * foreach goblet in order do
- *     insert into goblet_order values(NULL, @goblet_id, @order_id, @count);
- *     update goblet set count = count - @count where id = @goblet_id;
+ * foreach product in order do
+ *     insert into product_order values(NULL, @product_id, @order_id, @count);
  * end
  * commit;
  *
+ *
  * Change status:
+ *
  * begin;
- * if status == 'canceled' then
- *	goblets, counts = select goblet_id, count from goblet_order where order_id = order_id;
- *	foreach goblet, count do
- *		update goblet set count = count + @count where goblet = @goblet;
- *	end;
+ * old_status = select status from order where id = @order_id;
+ * if status == 'processing' then
+ *      product_ids, counts = select product_id, count from product_order where
+ *                            order_id = order_id;
+ *      foreach product_id, count do
+ *              update product set available_count = available_count - @count
+ *              where product_id = @product_id;
+ *      end;
+ * else if old_status != 'new' and status == 'canceled' then
+ *      product_ids, counts = select product_id, count from product_order where
+ *                            order_id = order_id;
+ *      foreach product_id, count do
+ *              update product set available_count = available_count + @count
+ *              where product_id = @product_id;
+ *      end;
  * end
  * update order set status = @status where id = order_id;
  * commit;
