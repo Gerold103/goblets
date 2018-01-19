@@ -74,7 +74,7 @@ function update_order_details() {
 	} else {
 		delivery_type = selected_delivery.val();
 		if (delivery_type == 'courier') {
-			total_price += 300;
+			total_price += 250;
 			$("#address_input").fadeIn(500);
 		} else {
 			$("#address_input").fadeOut(500);
