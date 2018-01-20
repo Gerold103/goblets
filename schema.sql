@@ -4,6 +4,7 @@ create table product (id integer autoincrement primary key,
                       price unsigned not NULL,
                       available_count unsigned not NULL,
                       size text not NULL,
+                      capacity unsigned NULL,
 
                       index(type));
 

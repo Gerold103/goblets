@@ -6,6 +6,8 @@ var products = [
 		icon: 'img/goblet_1.png',
 		name: 'Дракон',
 		count: 0,
+		capacity: 200,
+		size: '8х8х18см',
 		description: 'Quisque sed consectetur ex, a rutrum erat.' +
 			     'Pellentesque ipsum turpis, posuere eget' +
 			     'consequat nec.',
@@ -17,6 +19,8 @@ var products = [
 		icon: 'img/goblet_2.png',
 		name: 'Рука скелета',
 		count: 0,
+		capacity: 200,
+		size: '8х8х18см',
 		description: 'Quisque sed consectetur ex, a rutrum erat.' +
 			     'Pellentesque ipsum turpis, posuere eget' +
 			     'consequat nec.',
@@ -28,6 +32,8 @@ var products = [
 		icon: 'img/goblet_3.png',
 		name: 'Череп',
 		count: 0,
+		capacity: 200,
+		size: '8х8х18см',
 		description: 'Quisque sed consectetur ex, a rutrum erat.' +
 			     'Pellentesque ipsum turpis, posuere eget' +
 			     'consequat nec.',
@@ -134,6 +140,73 @@ function product_dom_for_order(product) {
 	tr.appendChild(td_add);
 	tr.appendChild(td_delete);
 	return tr;
+}
+
+function product_dom_for_catalogue(product) {
+	var div = document.createElement('div');
+	div.setAttribute('align', 'center');
+	div.className = 'product_item';
+
+	var img = new Image(250, 250);
+	img.src = product.image;
+	img.style.display = 'block';
+	img.setAttribute('alt', product.name);
+
+	var title = document.createElement('div');
+	title.className = 'product_title';
+	title.textContent = product.name;
+
+	var hr = document.createElement('hr');
+
+	var description = document.createElement('p');
+	description.textContent = product.description;
+
+	var price = document.createElement('div');
+	price.className = 'price';
+	price.textContent = product.price + '₽';
+
+	var size_div = document.createElement('div');
+	var u = document.createElement('u');
+	u.textContent = 'Размеры:';
+	var size = document.createTextNode(' ' + product.size);
+	size_div.appendChild(u);
+	size_div.appendChild(size);
+
+	var capacity_div;
+	if (product.capacity != null) {
+		capacity_div = document.createElement('div');
+		u = document.createElement('u');
+		u.textContent = 'Объем:';
+		var capacity =
+			document.createTextNode(' ' + product.capacity + 'мл');
+		capacity_div.appendChild(u);
+		capacity_div.appendChild(capacity);
+	} else {
+		capacity_div = null;
+	}
+
+	var ok_msg = document.createElement('div');
+	ok_msg.className = 'ok_msg';
+	ok_msg.textContent = 'Добавлено!';
+
+	var button = document.createElement('button');
+	button.className = 'wood_button';
+	button.onclick = function() { put_in_busket(product.id, ok_msg); };
+	var text = document.createTextNode('В корзину');
+
+	button.appendChild(text);
+	button.appendChild(busket_icon);
+	div.appendChild(img);
+	div.appendChild(title);
+	div.appendChild(hr);
+	div.appendChild(description);
+	div.appendChild(price);
+	div.appendChild(size_div);
+	if (capacity_div != null)
+		div.appendChild(capacity_div)
+	div.appendChild(button);
+	div.appendChild(ok_msg);
+	return div;
 }
 
 function update_busket() {
@@ -275,60 +348,12 @@ function sumbit_async() {
 	hide_error();
 }
 
-function create_function_on_put_in_busket(product_id, ok_msg) {
-	return function() { put_in_busket(product_id, ok_msg); };
-}
-
 function initial_push_products_to_dom() {
 	var catalogue = document.getElementById('catalogue');
 	while (catalogue.firstChild)
 		catalogue.removeChild(catalogue.firstChild);
-	for (var i = 0; i < products.length; ++i) {
-		var product = products[i];
-		var div = document.createElement('div');
-		div.setAttribute('align', 'center');
-		div.className = 'product_item';
-
-		var img = new Image(250, 250);
-		img.src = product.image;
-		img.style.display = 'block';
-		img.setAttribute('alt', product.name);
-
-		var title = document.createElement('div');
-		title.className = 'product_title';
-		title.textContent = product.name;
-
-		var hr = document.createElement('hr');
-
-		var description = document.createElement('p');
-		description.textContent = product.description;
-
-		var price = document.createElement('div');
-		price.className = 'price';
-		price.textContent = product.price + '₽';
-
-		var ok_msg = document.createElement('div');
-		ok_msg.className = 'ok_msg';
-		ok_msg.textContent = 'Добавлено!';
-
-		var button = document.createElement('button');
-		button.className = 'wood_button';
-		button.onclick =
-			create_function_on_put_in_busket(product.id, ok_msg);
-
-		var text = document.createTextNode('В корзину');
-
-		button.appendChild(text);
-		button.appendChild(busket_icon);
-		div.appendChild(img);
-		div.appendChild(title);
-		div.appendChild(hr);
-		div.appendChild(description);
-		div.appendChild(price);
-		div.appendChild(button);
-		div.appendChild(ok_msg);
-		catalogue.appendChild(div);
-	}
+	for (var i = 0; i < products.length; ++i)
+		catalogue.appendChild(product_dom_for_catalogue(products[i]));
 }
 
 $(document).ready(initial_push_products_to_dom);
