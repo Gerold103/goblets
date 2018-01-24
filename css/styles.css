@@ -18,15 +18,18 @@ body {
 	margin: -10px;
 	text-align: center;
 	background-repeat: repeat;
+	background-image: url(../img/background_paper.jpg);
+	background-repeat: repeat;
 }
 
 hr {
 	margin-top: 0px;
+	border-color: black;
 }
 
 .main_conatiner {
 	min-height: 100%;
-	min-width: 1100px;
+	min-width: 1300px;
 	max-width: 2000px;
 	display: inline-block;
 	position: relative;
@@ -63,9 +66,9 @@ hr {
 	background-image: url(../img/wood_button.jpg);
 	background-repeat: no-repeat;
 	background-size: cover;
-	font-size: 30px;
+	font-size: 40px;
 	letter-spacing: 2px;
-	font-weight: bold;
+	font-weight: lighter;
 	border-radius: 15px;
 	border: 3px solid #c18c37;
 	color: black;
@@ -147,10 +150,10 @@ hr {
 }
 
 .product_title {
-	font-weight: bold;
+	font-weight: lighter;
 	font-family: MiddleAge;
 	letter-spacing: 2px;
-	font-size: 40px;
+	font-size: 60px;
 }
 
 .product_item {
@@ -169,12 +172,13 @@ hr {
 
 .product_item p {
 	text-align: justify;
+	font-size: 20px;
 }
 
 .product_item .price {
 	font-family: MiddleAge;
 	letter-spacing: 2px;
-	font-size: 30px;
+	font-size: 40px;
 }
 
 .product_item button:hover {
@@ -191,7 +195,7 @@ hr {
 }
 
 .product_item > .ok_msg {
-	font-weight: bold;
+	font-weight: lighter;
 	font-size: 20px;
 	color: #359827;
 	height: 0px;
@@ -224,7 +228,7 @@ hr {
 
 .product_set .price {
 	font-family: MiddleAge;
-	font-size: 25px;
+	font-size: 35px;
 	letter-spacing: 2px;
 }
 
@@ -392,8 +396,7 @@ hr {
 	color: white;
 }
 
-#error_message {
-	color: red;
+#status_message {
 	font-size: 35px;
 	letter-spacing: 2px;
 	display: none;
@@ -405,7 +408,7 @@ hr {
 	width: 40px;
 	font-size: 30px;
 	text-align: center;
-	font-weight: bold;
+	font-weight: lighter;
 	margin-left: 10px;
 	color: black;
 }

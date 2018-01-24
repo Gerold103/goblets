@@ -45,10 +45,6 @@ var total_price = 0;
 var discount = 0;
 var delivery_type = null;
 
-var busket_icon = new Image(25, 25);
-busket_icon.src = 'img/basket.png';
-busket_icon.setAttribute('alt', 'Корзина');
-
 function slow_move_to(id) {
 	$('html, body').animate({scrollTop: $(id).offset().top}, 800);
 	return false;
@@ -195,7 +191,6 @@ function product_dom_for_catalogue(product) {
 	var text = document.createTextNode('В корзину');
 
 	button.appendChild(text);
-	button.appendChild(busket_icon);
 	div.appendChild(img);
 	div.appendChild(title);
 	div.appendChild(hr);
@@ -264,6 +259,7 @@ function update_busket() {
 		}
 		html += '</b><br>'
 	}
+	result.style.color = 'black';
 	result.innerHTML = html;
 
 	/* Update form. */
@@ -288,15 +284,27 @@ function put_in_busket(product_id, ok_msg) {
 	add_product_to_busket(product_id);
 }
 
-function show_form_error(message) {
-	var error = document.getElementById('error_message');
-	error.innerText = message;
-	$(error).fadeIn(500);
+function show_status_message(message, type) {
+	var status = document.getElementById('status_message');
+	status.innerText = message;
+	if (type == 'error')
+		status.style.color = 'red';
+	else
+		status.style.color = 'green';
+	$(status).fadeIn(500);
 }
 
-function hide_error() {
-	var error = document.getElementById('error_message');
-	$(error).fadeOut(500);
+function hide_status_message() {
+	var status = document.getElementById('status_message');
+	$(status).fadeOut(500);
+}
+
+function show_error_message(message) {
+	show_status_message(message, 'error');
+}
+
+function show_ok_message(message) {
+	show_status_message(message, 'ok');
 }
 
 function validate_email(email) {
@@ -309,43 +317,105 @@ function validate_phone(phone) {
 	return re.test(phone);
 }
 
-function sumbit_async() {
-	/* Validate and send via AJAX. */
-	if (delivery_type == null) {
-		show_form_error('Укажите способ доставки');
+function complete_sumission(response) {
+	try {
+		response = JSON.parse(response);
+	} catch (e) {
+		show_error_message('Ошибка обработки ответа сервера');
+		console.log(response);
+		console.log(e);
 		return;
 	}
+	if ('error' in response) {
+		show_error_message(response['error']);
+		console.log(response);
+		return;
+	}
+	var order_id = response.order_id;
+	for (var i = 0; i < products.length; ++i) {
+		var p = products[i];
+		p.count = 0;
+	}
+	update_busket();
+	hide_status_message();
+	var result = document.getElementById("order_result");
+	result.style.color = 'green';
+	result.innerText = 'Заказ №' + order_id + ' оформлен! Мы свяжемся с ' +
+			   'вами в ближайшее время!';
+}
+
+function sumbit_async() {
+	/* Validate and send via AJAX. */
+	var data_to_send = {};
+	if (delivery_type == null) {
+		show_error_message('Укажите способ доставки');
+		return;
+	}
+	data_to_send.delivery_type = delivery_type;
+
 	var vk_flag = document.getElementById("vk_flag").checked;
 	if (vk_flag) {
 		var vk_url = $("#vk_link_input").find('input[name="vk"]');
 		vk_url = vk_url.val();
 		if (vk_url.indexOf('vk.com') == -1 &&
 		    vk_url.indexOf('vk.ru') == -1) {
-			show_form_error('Неверная ссылка на страницу ВК');
+			show_error_message('Неверная ссылка на страницу ВК');
 			return;
 		}
+		data_to_send.vk_url = vk_url;
 	}
+
 	var email = $("#email_input").find('input[name="email"]').val().trim();
 	if (email.length > 0 && !validate_email(email)) {
-		show_form_error('Неверная почта');
+		show_error_message('Неверная почта');
 		return;
 	}
+	data_to_send.email = email;
+
 	var phone = $("#phone_input").find('input[name="phone"]').val().trim();
 	if (!validate_phone(phone)) {
-		show_form_error('Неверный телефон - используйте формат ' +
-				'"89031234567"');
+		show_error_message('Неверный телефон - используйте формат ' +
+				   '"89031234567"');
 		return;
 	}
+	data_to_send.phone = phone;
+
+	data_to_send.name =
+		$("#name_input").find('input[name="name"]').val().trim();
+
+	var comment_input =
+		$("#comment_input").find('textarea[name="comment"]');
+	data_to_send.comment = comment_input.val().trim();
+
 	if (delivery_type == 'courier') {
 		var address = $("#address_input").find('input[name="address"]');
 		address = address.val().trim();
 		if (address.length == 0) {
-			show_form_error('Для курьреской доставки нужно ' +
-					'указать адрес')
+			show_error_message('Для курьреской доставки нужно ' +
+					   'указать адрес')
 			return;
 		}
+		data_to_send.address = address;
 	}
-	hide_error();
+	var products_to_send = [];
+	for (var i = 0; i < products.length; ++i) {
+		var p = products[i];
+		if (p.count > 0)
+			products_to_send.push({id: p.id, count: p.count});
+	}
+	data_to_send.products = JSON.stringify(products_to_send);
+	show_ok_message('Отправка заказа ...');
+
+	$.ajax({
+		success: complete_sumission,
+		type: 'POST',
+		url: 'make_order.php',
+		data: data_to_send,
+		error: function() {
+			show_error_message('Ошибка при отправке запроса - ' +
+					   'повторите позже');
+		},
+	});
 }
 
 function initial_push_products_to_dom() {
