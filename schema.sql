@@ -9,10 +9,10 @@ create table product (id integer primary key,
                       capacity integer unsigned NULL,
 
                       index(type));
-insert into product values(0, 'goblet', 'Дракон', 1200, 10, '8x8x18', 200);
-insert into product values(1, 'goblet', 'Рука скелета', 1200, 10,
+insert into product values(0, 'goblet', 'Дракон', 1200, 0, '8x8x18', 200);
+insert into product values(1, 'goblet', 'Рука скелета', 1200, 0,
                            '8x8x18', 200);
-insert into product values(2, 'goblet', 'Череп', 1200, 10, '8x8x18', 200);
+insert into product values(2, 'goblet', 'Череп', 1200, 0, '8x8x18', 200);
 
 create table user (id integer auto_increment primary key,
                    first_order_ts timestamp default current_timestamp not NULL,
@@ -38,11 +38,12 @@ create table bis_order (id integer auto_increment primary key,
                         status enum ('new', 'processing', 'ready', 'shipped',
                                      'delivered', 'canceled') not NULL,
 
-                        index(status, open_ts),
-                        index(open_ts, status),
+                        index(status, open_ts desc),
+                        index(open_ts desc, status),
                         index(user_id),
 
-                        foreign key (user_id) references user(id));
+                        foreign key (user_id) references user(id)
+                        on delete cascade);
 
 create table product_order (id integer auto_increment primary key,
                             product_id integer not NULL,
@@ -52,23 +53,20 @@ create table product_order (id integer auto_increment primary key,
                             index(product_id),
                             unique index(order_id, product_id),
 
-                            foreign key (product_id) references product(id),
-                            foreign key (order_id) references bis_order(id));
+                            foreign key (product_id) references product(id)
+                            on delete cascade,
+                            foreign key (order_id) references bis_order(id)
+                            on delete cascade);
 
 delimiter $$
 create function get_or_create_user(vk_link_ text, name_ text, address_ text,
                                    email_ text, telephone_ text)
                 returns integer NOT DETERMINISTIC
 begin
-  declare user_id integer;
-  declare user_count integer;
-  select id, count(*) into user_id, user_count from user where telephone = telephone_;
-  if user_count = 0 then
-    insert into user values(null, null, vk_link_, name_, address_, email_,
-                            telephone_, null);
-    set user_id = last_insert_id();
-  end if;
-  return user_id;
+  insert into user values(null, null, vk_link_, name_, address_, email_,
+                          telephone_, null) on duplicate key
+    update vk_link = vk_link_, address = address_, name = name_, email = email_;
+  return last_insert_id();
 end$$
 delimiter ;
 /**
@@ -113,4 +111,7 @@ delimiter ;
  * end
  * update bis_order set status = @status where id = order_id;
  * commit;
+ *
+ *
+ * Show list of orders: (page, status, telephone, order_id).
  */
