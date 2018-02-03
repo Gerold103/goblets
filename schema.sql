@@ -57,18 +57,6 @@ create table product_order (id integer auto_increment primary key,
                             on delete cascade,
                             foreign key (order_id) references bis_order(id)
                             on delete cascade);
-
-delimiter $$
-create function get_or_create_user(vk_link_ text, name_ text, address_ text,
-                                   email_ text, telephone_ text)
-                returns integer NOT DETERMINISTIC
-begin
-  insert into user values(null, null, vk_link_, name_, address_, email_,
-                          telephone_, null) on duplicate key
-    update vk_link = vk_link_, address = address_, name = name_, email = email_;
-  return last_insert_id();
-end$$
-delimiter ;
 /**
  * Add order:
  *

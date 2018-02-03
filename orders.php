@@ -2,7 +2,7 @@
 	require_once('admin_authentification.php');
 	require_once('db_utils.php');
 
-	$orders_per_page = 2;
+	$orders_per_page = 10;
 	$header = 'Управление заказами';
 	$status = $_GET['status'];
 	if (isset($status) && strlen($status) == 0)
@@ -74,10 +74,10 @@
 				echo($order_status_to_string[$order['status']]);
 			?></td>
 			<td><?php
-				echo(date('d/m/y H:i', $order['open_ts']));
+				echo($order['open_ts']);
 			?></td>
 			<td><?php
-				echo(date('d/m/y H:i', $order['update_ts']));
+				echo($order['update_ts']);
 			?></td>
 			<td>
 				<a href="user.php?id=<?php

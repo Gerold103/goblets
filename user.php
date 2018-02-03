@@ -7,12 +7,14 @@
 	$action = $_GET['action'];
 	$user = NULL;
 	$header = 'Страница клиента';
-	if ($action == 'delete')
+	if ($action == 'delete') {
 		delete_user_by_telephone($telephone);
-	elseif (isset($telephone))
+	} elseif (isset($telephone)) {
 		$user = get_user_by_telephone($telephone);
-	else
+	} else {
 		$user = get_user_by_id($id);
+		$telephone = $user['telephone'];
+	}
 ?>
 <!DOCTYPE html>
 <html>

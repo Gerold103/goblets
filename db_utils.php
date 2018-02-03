@@ -69,12 +69,15 @@
 		global $db_connection;
 		if ($db_connection->begin_transaction() === false)
 			db_error($db_connection->error);
-		$user_id =
-			db_execute_and_fetch('select get_or_create_user(?, ?, '.
-					     '?, ?, ?) as id', 'sssss', $vk_url,
-					     $name, $address, $email,
-					     $telephone)[0]['id'];
-
+		$stmt = db_execute('insert into user values(null, null, ?, ?, '.
+				   '?, ?, ?, null) on duplicate key update '.
+				   'vk_link = ?, address = ?, name = ?, '.
+				   'email = ?, id = last_insert_id(id)',
+				   'sssssssss', $vk_url, $name, $address,
+				   $email, $telephone, $vk_url, $address, $name,
+				   $email);
+		$stmt->close();
+		$user_id = $db_connection->insert_id;
 		$stmt = db_execute('insert into bis_order values (null, null, '.
 				   'null, ?, ?, ?, null, "new")', 'sis',
 				   $delivery_type, $user_id, $comment);
