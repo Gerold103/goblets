@@ -113,18 +113,18 @@ function product_dom_for_order(product) {
 			       ' = ' + product.count * product.price + '₽';
 
 	var td_add = document.createElement('td');
-	var add_button = document.createElement('button');
+	var add_button = document.createElement('span');
 	add_button.className = 'add_button';
-	add_button.textContent = '+';
+	add_button.innerHTML = '<span>+</span>';
 	add_button.onclick = function() {
 		add_product_to_busket(product.id);
 	};
 	td_add.appendChild(add_button);
 
 	var td_delete = document.createElement('td');
-	var delete_btn = document.createElement('button');
+	var delete_btn = document.createElement('span');
 	delete_btn.className = 'delete_button';
-	delete_btn.textContent = '-';
+	delete_btn.innerHTML = '<span>-</span>';
 	delete_btn.onclick = function() {
 		delete_product_from_busket(product.id);
 	};
