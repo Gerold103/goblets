@@ -41,6 +41,21 @@
 		<b>Статус: </b><?php
 			echo($order_status_to_string[$order['status']]);
 		?><br>
+		<b>Адрес: </b><?php
+			if (isset($order['address']) &&
+			    strlen($order['address']) > 0)
+				echo($order['address']);
+		?><br>
+		<b>Почта: </b><?php
+			if (isset($order['email']) &&
+			    strlen($order['email']) > 0)
+				echo($order['email']);
+		?><br>
+		<b>Ссылка на ВК: </b><?php
+			if (isset($order['vk_link']) &&
+			    strlen($order['vk_link']) > 0)
+				echo($order['vk_link']);
+		?><br>
 		<b>Комментарий пользователя: </b><?php
 			if (isset($order['user_comment']))
 				echo($order['user_comment']);

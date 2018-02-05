@@ -14,7 +14,8 @@ commit;
 
 begin;
 insert into bis_order values (NULL, NULL, NULL, 'courier', 1, 'user comment 1',
-			      'admin comment 1', 'new');
+			      'admin comment 1', 'new', 'address5',
+			      'e5@mail.ru', 'vk.com/user5');
 set @order_id = last_insert_id();
 insert into product_order values (NULL, 0, @order_id, 1);
 insert into product_order values (NULL, 1, @order_id, 2);
@@ -23,7 +24,8 @@ commit;
 
 begin;
 insert into bis_order values (NULL, NULL, NULL, 'customer', 2, 'user comment 2',
-			      '', 'processing');
+			      '', 'processing', 'address6',
+			      'e6@mail.ru', 'vk.com/user6');
 set @order_id = last_insert_id();
 insert into product_order values (NULL, 0, @order_id, 1);
 insert into product_order values (NULL, 1, @order_id, 2);
@@ -31,7 +33,8 @@ commit;
 
 begin;
 insert into bis_order values (NULL, NULL, NULL, 'courier', 3, 'user comment 3',
-			      'admin comment 3', 'ready');
+			      'admin comment 3', 'ready', 'address7',
+			      'e7@mail.ru', 'vk.com/user7');
 set @order_id = last_insert_id();
 insert into product_order values (NULL, 1, @order_id, 2);
 insert into product_order values (NULL, 2, @order_id, 3);
@@ -39,56 +42,64 @@ commit;
 
 begin;
 insert into bis_order values (NULL, NULL, NULL, 'courier', 4, NULL, NULL,
-			      'shipped');
+			      'shipped', 'address8',
+			      'e8@mail.ru', 'vk.com/user8');
 set @order_id = last_insert_id();
 insert into product_order values (NULL, 0, @order_id, 1);
 commit;
 
 begin;
 insert into bis_order values (NULL, NULL, NULL, 'courier', 1, NULL, NULL,
-			      'delivered');
+			      'delivered', 'address9',
+			      'e9@mail.ru', 'vk.com/user9');
 set @order_id = last_insert_id();
 insert into product_order values (NULL, 0, @order_id, 1);
 commit;
 
 begin;
 insert into bis_order values (NULL, NULL, NULL, 'courier', 2, NULL, NULL,
-			      'canceled');
+			      'canceled', 'address10',
+			      'e10@mail.ru', 'vk.com/user10');
 set @order_id = last_insert_id();
 insert into product_order values (NULL, 0, @order_id, 1);
 commit;
 
 begin;
 insert into bis_order values (NULL, NULL, NULL, 'courier', 3, NULL, NULL,
-			      'canceled');
+			      'canceled', 'address11',
+			      'e11@mail.ru', 'vk.com/user11');
 set @order_id = last_insert_id();
 insert into product_order values (NULL, 0, @order_id, 1);
 commit;
 
 begin;
 insert into bis_order values (NULL, NULL, NULL, 'courier', 4, NULL, NULL,
-			      'new');
+			      'new', 'address12',
+			      'e12@mail.ru', 'vk.com/user12');
 set @order_id = last_insert_id();
 insert into product_order values (NULL, 0, @order_id, 1);
 commit;
 
 begin;
 insert into bis_order values (NULL, NULL, NULL, 'courier', 1, NULL, NULL,
-			      'processing');
+			      'processing', 'address13',
+			      'e13@mail.ru', 'vk.com/user13');
 set @order_id = last_insert_id();
 insert into product_order values (NULL, 0, @order_id, 1);
 commit;
 
 begin;
 insert into bis_order values (NULL, NULL, NULL, 'courier', 2, NULL, NULL,
-			      'ready');
+			      'ready', 'address14',
+			      'e14@mail.ru', 'vk.com/user14');
 set @order_id = last_insert_id();
 insert into product_order values (NULL, 0, @order_id, 1);
 commit;
 
 begin;
 insert into bis_order values (NULL, NULL, NULL, 'courier', 3, NULL, NULL,
-			      'shipped');
+			      'shipped', 'address15',
+			      'e15@mail.ru', 'vk.com/user15');
 set @order_id = last_insert_id();
 insert into product_order values (NULL, 0, @order_id, 1);
 commit;

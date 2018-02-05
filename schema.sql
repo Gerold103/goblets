@@ -37,6 +37,12 @@ create table bis_order (id integer auto_increment primary key,
                         admin_comment text NULL,
                         status enum ('new', 'processing', 'ready', 'shipped',
                                      'delivered', 'canceled') not NULL,
+                        -- Duplicates of some user fields on a
+                        -- case if he makes several orders on
+                        -- different addresses, emails and VKs.
+                        address text NULL,
+                        email text NULL,
+                        vk_link text NULL,
 
                         index(status, open_ts desc),
                         index(open_ts desc, status),

@@ -79,8 +79,9 @@
 		$stmt->close();
 		$user_id = $db_connection->insert_id;
 		$stmt = db_execute('insert into bis_order values (null, null, '.
-				   'null, ?, ?, ?, null, "new")', 'sis',
-				   $delivery_type, $user_id, $comment);
+				   'null, ?, ?, ?, null, "new", ?, ?, ?)',
+				   'sissss', $delivery_type, $user_id, $comment,
+				   $address, $email, $vk_url);
 		$stmt->close();
 		$order_id = $db_connection->insert_id;
 		$query_insert_product_orders = '';
