@@ -11,6 +11,7 @@ var products = [
 		description: 'Quisque sed consectetur ex, a rutrum erat.' +
 			     'Pellentesque ipsum turpis, posuere eget' +
 			     'consequat nec.',
+		dom: null,
 	},
 	{
 		id: 1,
@@ -24,6 +25,7 @@ var products = [
 		description: 'Quisque sed consectetur ex, a rutrum erat.' +
 			     'Pellentesque ipsum turpis, posuere eget' +
 			     'consequat nec.',
+		dom: null,
 	},
 	{
 		id: 2,
@@ -37,6 +39,7 @@ var products = [
 		description: 'Quisque sed consectetur ex, a rutrum erat.' +
 			     'Pellentesque ipsum turpis, posuere eget' +
 			     'consequat nec.',
+		dom: null,
 	}
 ];
 
@@ -138,6 +141,19 @@ function product_dom_for_order(product) {
 	return tr;
 }
 
+function product_dom_update(product) {
+	var price = null;
+	for (var i = 0; i < product.dom.childNodes.length; ++i) {
+		var child = product.dom.childNodes[i];
+		if (child.className == 'price') {
+			price = child;
+			break;
+		}
+	}
+	price.textContent = product.price + '₽ х ' + product.count + ' = ' +
+			    product.count * product.price + '₽';
+}
+
 function product_dom_for_catalogue(product) {
 	var div = document.createElement('div');
 	div.setAttribute('align', 'center');
@@ -236,14 +252,18 @@ function update_busket() {
 
 	/* Update ordering area. */
 	var items = document.getElementById('order_items');
-	/* Clear old items. */
-	while (items.firstChild)
-		items.removeChild(items.firstChild);
 	for (var i = 0; i < products.length; ++i) {
 		var product = products[i];
 		if (product.count > 0) {
-			var dom = product_dom_for_order(product)
-			items.appendChild(dom);
+			if (product.dom == null) {
+				product.dom = product_dom_for_order(product);
+				items.appendChild(product.dom);
+			} else {
+				product_dom_update(product);
+			}
+		} else if (product.dom != null) {
+			items.removeChild(product.dom);
+			product.dom = null;
 		}
 	}
 
